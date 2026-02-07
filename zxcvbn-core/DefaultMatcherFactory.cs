@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Zxcvbn.Matcher;
 
 namespace Zxcvbn
@@ -33,12 +33,19 @@ namespace Zxcvbn
                 new DictionaryMatcher("female_names", "female_names.lst"),
                 new DictionaryMatcher("surnames", "surnames.lst"),
                 new DictionaryMatcher("us_tv_and_film", "us_tv_and_film.lst"),
+                
+                // Custom dictionary - add your domain-specific words here
+                new DictionaryMatcher("my_custom", "my_custom.lst"),
+                
                 new ReverseDictionaryMatcher("passwords", "passwords.lst"),
                 new ReverseDictionaryMatcher("english", "english.lst"),
                 new ReverseDictionaryMatcher("male_names", "male_names.lst"),
                 new ReverseDictionaryMatcher("female_names", "female_names.lst"),
                 new ReverseDictionaryMatcher("surnames", "surnames.lst"),
                 new ReverseDictionaryMatcher("us_tv_and_film", "us_tv_and_film.lst"),
+                
+                // Reverse matcher for custom dictionary
+                new ReverseDictionaryMatcher("my_custom", "my_custom.lst"),
             };
 
             return new List<IMatcher>(dictionaryMatchers)
