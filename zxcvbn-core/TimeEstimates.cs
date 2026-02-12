@@ -50,44 +50,47 @@ namespace Zxcvbn
             string displayString;
 
             if (seconds < 1)
-                return "less than a second";
+                return "menos de un segundo";
             if (seconds < minute)
             {
                 displayNumber = (int)Math.Round(seconds);
-                displayString = $"{displayNumber} second";
+                var unit = displayNumber == 1 ? "segundo" : "segundos";
+                displayString = $"{displayNumber} {unit}";
             }
             else if (seconds < hour)
             {
                 displayNumber = (int)Math.Round(seconds / minute);
-                displayString = $"{displayNumber} minute";
+                var unit = displayNumber == 1 ? "minuto" : "minutos";
+                displayString = $"{displayNumber} {unit}";
             }
             else if (seconds < day)
             {
                 displayNumber = (int)Math.Round(seconds / hour);
-                displayString = $"{displayNumber} hour";
+                var unit = displayNumber == 1 ? "hora" : "horas";
+                displayString = $"{displayNumber} {unit}";
             }
             else if (seconds < month)
             {
                 displayNumber = (int)Math.Round(seconds / day);
-                displayString = $"{displayNumber} day";
+                var unit = displayNumber == 1 ? "día" : "días";
+                displayString = $"{displayNumber} {unit}";
             }
             else if (seconds < year)
             {
                 displayNumber = (int)Math.Round(seconds / month);
-                displayString = $"{displayNumber} month";
+                var unit = displayNumber == 1 ? "mes" : "meses";
+                displayString = $"{displayNumber} {unit}";
             }
             else if (seconds < century)
             {
                 displayNumber = (int)Math.Round(seconds / year);
-                displayString = $"{displayNumber} year";
+                var unit = displayNumber == 1 ? "año" : "años";
+                displayString = $"{displayNumber} {unit}";
             }
             else
             {
-                displayString = "centuries";
+                displayString = "siglos";
             }
-
-            if (displayNumber.HasValue && displayNumber != 1)
-                displayString += "s";
 
             return displayString;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Zxcvbn.Matcher.Matches;
 
@@ -14,8 +15,8 @@ namespace Zxcvbn
             Warning = string.Empty,
             Suggestions = new[]
             {
-                "Use a few words, avoid common phrases",
-                "No need for symbols, digits, or uppercase letters",
+                "Usa algunas palabras, evita frases comunes",
+                "No necesitas símbolos, dígitos ni letras mayúsculas",
             },
         };
 
@@ -42,7 +43,7 @@ namespace Zxcvbn
             var longestMatch = sequence.OrderBy(c => c.Token.Length).Last();
 
             var feedback = GetMatchFeedback(longestMatch, sequence.Count() == 1);
-            var extraFeedback = "Add another word or two.  Uncommon words are better.";
+            var extraFeedback = "Agrega una o dos palabras más. Las palabras poco comunes son mejores.";
 
             if (feedback != null)
             {
@@ -69,40 +70,40 @@ namespace Zxcvbn
                 if (isSoleMatch && !match.L33t && !match.Reversed)
                 {
                     if (match.Rank <= 10)
-                        warning = "This is a top-10 common password";
+                        warning = "Esta es una de las 10 contraseñas más comunes";
                     else if (match.Rank <= 100)
-                        warning = "This is a top-100 common password";
+                        warning = "Esta es una de las 100 contraseñas más comunes";
                     else
-                        warning = "This is a very common password";
+                        warning = "Esta es una contraseña muy común";
                 }
                 else if (match.GuessesLog10 <= 4)
                 {
-                    warning = "This is similar to a commonly used password";
+                    warning = "Esto es similar a una contraseña de uso común";
                 }
             }
-            else if (match.DictionaryName == "english" && isSoleMatch)
+            else if ((match.DictionaryName == "english" || match.DictionaryName == "spanish") && isSoleMatch)
             {
-                warning = "A word by itself is easy to guess";
+                warning = "Una palabra por sí sola es fácil de adivinar";
             }
             else if (match.DictionaryName == "surnames" || match.DictionaryName == "male_names" || match.DictionaryName == "female_names")
             {
                 if (isSoleMatch)
-                    warning = "Names and surnames by themselves are easy to guess";
+                    warning = "Nombres y apellidos por sí solos son fáciles de adivinar";
                 else
-                    warning = "Common names and surnames are easy to guess";
+                    warning = "Nombres y apellidos comunes son fáciles de adivinar";
             }
 
             var suggestions = new List<string>();
             var word = match.Token;
             if (char.IsUpper(word[0]))
-                suggestions.Add("Capitalization doesn't help very much");
+                suggestions.Add("La capitalización no ayuda mucho");
             else if (word.All(c => char.IsUpper(c)) && word.ToLower() != word)
-                suggestions.Add("All-uppercase is almost as easy to guess as all-lowercase");
+                suggestions.Add("Usar todo en mayúsculas es casi tan fácil de adivinar como todo en minúsculas");
 
             if (match.Reversed && match.Token.Length >= 4)
-                suggestions.Add("Reversed words aren't much harder to guess");
+                suggestions.Add("Las palabras invertidas no son mucho más difíciles de adivinar");
             if (match.L33t)
-                suggestions.Add("Predictable substitutions like '@' instead of 'a' don't help very much");
+                suggestions.Add("Sustituciones predecibles como '@' por 'a' no ayudan mucho");
 
             return new FeedbackItem
             {
@@ -121,20 +122,20 @@ namespace Zxcvbn
                 case "spatial":
                     return new FeedbackItem
                     {
-                        Warning = (match as SpatialMatch).Turns == 1 ? "Straight rows of keys are easy to guess" : "Short keyboard patterns are easy to guess",
+                        Warning = (match as SpatialMatch).Turns == 1 ? "Filas rectas de teclas son fáciles de adivinar" : "Los patrones cortos de teclado son fáciles de adivinar",
                         Suggestions = new List<string>
                         {
-                            "Use a longer keyboard pattern with more turns",
+                            "Usa un patrón de teclado más largo con más giros",
                         },
                     };
 
                 case "repeat":
                     return new FeedbackItem
                     {
-                        Warning = (match as RepeatMatch).BaseToken.Length == 1 ? "Repeats like 'aaa' are easy to guess" : "Repeats like 'abcabcabc' are only slightly harder to guess than 'abc'",
+                        Warning = (match as RepeatMatch).BaseToken.Length == 1 ? "Repeticiones como 'aaa' son fáciles de adivinar" : "Repeticiones como 'abcabcabc' son sólo un poco más difíciles de adivinar que 'abc'",
                         Suggestions = new List<string>
                         {
-                            "Avoid repeated words and characters",
+                            "Evita palabras y caracteres repetidos",
                         },
                     };
 
@@ -143,11 +144,11 @@ namespace Zxcvbn
                     {
                         return new FeedbackItem
                         {
-                            Warning = "Recent years are easy to guess",
+                            Warning = "Años recientes son fáciles de adivinar",
                             Suggestions = new List<string>
                             {
-                                "Avoid recent years",
-                                "Avoid years that are associated with you",
+                                "Evita años recientes",
+                                "Evita años que estén asociados contigo",
                             },
                         };
                     }
@@ -157,10 +158,10 @@ namespace Zxcvbn
                 case "date":
                     return new FeedbackItem
                     {
-                        Warning = "Dates are often easy to guess",
+                        Warning = "Las fechas suelen ser fáciles de adivinar",
                         Suggestions = new List<string>
                         {
-                            "Avoid dates and years that are associated with you",
+                            "Evita fechas y años que estén asociados contigo",
                         },
                     };
             }

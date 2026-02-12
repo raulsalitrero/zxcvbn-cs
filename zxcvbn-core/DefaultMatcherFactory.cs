@@ -35,7 +35,7 @@ namespace Zxcvbn
                 new DictionaryMatcher("us_tv_and_film", "us_tv_and_film.lst"),
                 
                 // Custom dictionary - add your domain-specific words here
-                new DictionaryMatcher("my_custom", "my_custom.lst"),
+                new DictionaryMatcher("spanish", "spanish.lst"),
                 
                 new ReverseDictionaryMatcher("passwords", "passwords.lst"),
                 new ReverseDictionaryMatcher("english", "english.lst"),
@@ -45,7 +45,7 @@ namespace Zxcvbn
                 new ReverseDictionaryMatcher("us_tv_and_film", "us_tv_and_film.lst"),
                 
                 // Reverse matcher for custom dictionary
-                new ReverseDictionaryMatcher("my_custom", "my_custom.lst"),
+                new ReverseDictionaryMatcher("spanish", "spanish.lst"),
             };
 
             return new List<IMatcher>(dictionaryMatchers)
